@@ -17,11 +17,11 @@ public class DocumentDto {
     private String addressName;
 
     @JsonProperty("x")
-    private double longitude;
+    private double longitude; // 경도
 
     @JsonProperty("y")
-    private double latitude;
+    private double latitude;  // 위도
 
     @JsonProperty("distance")
-    private double distance;
+    private double distance;  // 거리
 }

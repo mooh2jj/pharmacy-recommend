@@ -24,6 +24,11 @@ public class KakaoApiAddressSearchService {
     @Value("${kakao.rest.api.key}")
     private String kakaoRestApiKey;
 
+    /**
+     * 카카오 주소 검색 API 호출
+     * @param address 검색할 주소
+     * @return KakaoApiResponseDto : 주소 검색 결과
+     */
     public KakaoApiResponseDto requestAddressSearch(String address) {
         // kakao api 호출
         URI uri = kakaoUriBuilderService.buildUriByAddressSearch(address);
