@@ -1,0 +1,11 @@
+server:
+  port: 8085
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}
