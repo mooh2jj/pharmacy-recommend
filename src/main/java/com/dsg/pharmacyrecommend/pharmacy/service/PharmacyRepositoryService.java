@@ -21,9 +21,10 @@ public class PharmacyRepositoryService {
     private final PharmacyRepository pharmacyRepository;
 
     // self invocation test
+    // 내부에서 호출하는 방식에서는 @Transactional이 적용되지 않음
     public void bar(List<Pharmacy> pharmacyList) {
         log.info("bar CurrentTransactionName: "+ TransactionSynchronizationManager.getCurrentTransactionName());
-        foo(pharmacyList);
+        foo(pharmacyList); // self invocation
     }
 
     // self invocation test
