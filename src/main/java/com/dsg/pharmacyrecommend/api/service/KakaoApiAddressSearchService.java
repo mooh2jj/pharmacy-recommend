@@ -1,4 +1,4 @@
-package com.dsg.pharmacyrecommend.service;
+package com.dsg.pharmacyrecommend.api.service;
 
 import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
 import lombok.RequiredArgsConstructor;

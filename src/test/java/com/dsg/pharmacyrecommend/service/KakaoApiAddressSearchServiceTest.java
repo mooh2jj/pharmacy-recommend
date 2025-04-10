@@ -1,5 +1,7 @@
 package com.dsg.pharmacyrecommend.service;
 
+import com.dsg.pharmacyrecommend.api.service.KakaoApiAddressSearchService;
+import com.dsg.pharmacyrecommend.api.service.KakaoUriBuilderService;
 import com.dsg.pharmacyrecommend.dto.DocumentDto;
 import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
 import com.dsg.pharmacyrecommend.dto.MetaDto;
@@ -11,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
