@@ -16,7 +16,9 @@ spring:
   config:
     activate:
       on-profile: common
-
+  output:
+    ansi:
+      enabled: always # ANSI 콘솔 색상 활성화 (JUnit 테스트 포함)
 kakao:
   rest:
     api:
@@ -37,12 +39,16 @@ spring:
       host: localhost
       port: 6379
   jpa:
+    open-in-view: false # JPA open-in-view 비활성화
     hibernate:
       ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true    # SQL 포맷팅
+        highlight_sql: true # 하이라이트 SQL 출력
+        use_sql_comments: true # 실제 JPQL SQL 주석 사용
+
 
 pharmacy:
   recommendation:
@@ -64,12 +70,15 @@ spring:
       host: pharmacy-recommendation-redis
       port: 6379
   jpa:
+    open-in-view: false # JPA open-in-view 비활성화
     hibernate:
-      ddl-auto: validate # prod 배포시 validate
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true    # SQL 포맷팅
+        highlight_sql: true # 하이라이트 SQL 출력
+        use_sql_comments: true # 실제 JPQL SQL 주석 사용
 
 pharmacy:
   recommendation:

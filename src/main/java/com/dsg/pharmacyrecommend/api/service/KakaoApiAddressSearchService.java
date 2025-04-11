@@ -8,6 +8,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +32,11 @@ public class KakaoApiAddressSearchService {
      * @param address 검색할 주소
      * @return KakaoApiResponseDto : 주소 검색 결과
      */
+    @Retryable(
+            value = {RuntimeException.class},
+            maxAttempts = 2,
+            backoff = @Backoff(delay = 2000)
+    )
     public KakaoApiResponseDto requestAddressSearch(String address) {
         // kakao api 호출
         URI uri = kakaoUriBuilderService.buildUriByAddressSearch(address);
@@ -43,6 +51,18 @@ public class KakaoApiAddressSearchService {
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }
+        return null;
+    }
+
+    /**
+     * 재시도 후에도 실패한 경우 호출되는 메서드
+     * @param e 예외
+     * @param address 주소
+     * @return null
+     */
+    @Recover
+    public KakaoApiResponseDto recover(RuntimeException e, String address) {
+        log.error("[KakaoApiAddressSearchService recover] error: {}, address: {}", e.getMessage(), address);
         return null;
     }
 }
