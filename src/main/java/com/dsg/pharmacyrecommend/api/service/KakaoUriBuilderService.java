@@ -28,10 +28,10 @@ public class KakaoUriBuilderService {
         UriComponentsBuilder uriBuilder;
         if (baseUrl != null) {
             // 테스트용 URL 사용
-            uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "v2/local/search/address.json");
+            uriBuilder = UriComponentsBuilder.fromUriString(baseUrl + "v2/local/search/address.json");
         } else {
             // 실제 카카오 API URL 사용
-            uriBuilder = UriComponentsBuilder.fromHttpUrl(KAKAO_LOCAL_SEARCH_ADDRESS_URL);
+            uriBuilder = UriComponentsBuilder.fromUriString(KAKAO_LOCAL_SEARCH_ADDRESS_URL);
         }
 
         uriBuilder.queryParam("query", address);
@@ -42,11 +42,19 @@ public class KakaoUriBuilderService {
         return uri;
     }
 
+    /**
+     * 카카오 카테고리 검색 API 호출을 위한 URI 빌드
+     * @param latitude 위도
+     * @param longitude 경도
+     * @param radius 반경
+     * @param category 카테고리
+     * @return URI : 카카오 카테고리 검색 API URI
+     */
     public URI buildUriByCategorySearch(double latitude, double longitude, double radius, String category) {
 
         double meterRadius = radius * 1000;
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(KAKAO_LOCAL_CATEGORY_SEARCH_URL);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(KAKAO_LOCAL_CATEGORY_SEARCH_URL);
         uriBuilder.queryParam("category_group_code", category);
         uriBuilder.queryParam("x", longitude);
         uriBuilder.queryParam("y", latitude);

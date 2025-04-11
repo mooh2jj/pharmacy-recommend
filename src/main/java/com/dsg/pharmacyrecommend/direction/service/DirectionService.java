@@ -45,12 +45,12 @@ public class DirectionService {
         Long decodedId = base62Service.decodeDirectionId(encodedId);
         Direction direction = directionRepository.findById(decodedId).orElse(null);
 
+        assert direction != null;
         String params = String.join(",", direction.getTargetPharmacyName(),
                 String.valueOf(direction.getTargetLatitude()), String.valueOf(direction.getTargetLongitude()));
-        String result = UriComponentsBuilder.fromHttpUrl(DIRECTION_BASE_URL + params)
-                .toUriString();
 
-        return result;
+        return UriComponentsBuilder.fromUriString(DIRECTION_BASE_URL + params)
+                .toUriString();
     }
 
     /**

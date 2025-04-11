@@ -21,18 +21,25 @@ public class KakaoCategorySearchService {
 
     private final RestTemplate restTemplate;
 
-    private static final String PHARMACY_CATEGORY = "PM9";
+    private static final String PHARMACY_CATEGORY = "PM9";  // 약국 카테고리
 
     @Value("${kakao.rest.api.key}")
     private String kakaoRestApiKey;
 
+    /**
+     * 카카오 카테고리 검색 API 호출
+     * @param latitude
+     * @param longitude
+     * @param radius
+     * @return KakaoApiResponseDto : 카카오 카테고리 검색 API 응답 DTO
+     */
     public KakaoApiResponseDto requestPharmacyCategorySearch(double latitude, double longitude, double radius) {
 
         URI uri = kakaoUriBuilderService.buildUriByCategorySearch(latitude, longitude, radius, PHARMACY_CATEGORY);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "KakaoAK "+ kakaoRestApiKey);
-        HttpEntity httpEntity = new HttpEntity<>(headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, KakaoApiResponseDto.class).getBody();
     }
