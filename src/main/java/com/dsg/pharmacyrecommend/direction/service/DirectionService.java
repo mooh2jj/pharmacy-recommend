@@ -53,6 +53,11 @@ public class DirectionService {
         return result;
     }
 
+    /**
+     * 반경 10km 이내 약국 검색 결과를 Direction List로 변환
+     * @param documentDto 검색 결과
+     * @return Direction List
+     */
     public List<Direction> buildDirectionList(DocumentDto documentDto) {
         if(Objects.isNull(documentDto)) return Collections.emptyList();
 
