@@ -7,17 +7,17 @@
 
 ## 목차
 1. [프로젝트 개요](#프로젝트-개요)
-2. [기술 스택](#기술-스택)
-3. [백엔드](#백엔드)
+2. [백엔드](#백엔드)
    - [구조](#백엔드-구조)
    - [API 명세](#api-명세)
    - [주요 기능](#백엔드-주요-기능)
    - [설정 가이드](#백엔드-설정-가이드)
-4. [프론트엔드](#프론트엔드)
+3. [프론트엔드](#프론트엔드)
    - [구조](#프론트엔드-구조)
    - [컴포넌트](#컴포넌트)
    - [API 연동](#api-연동)
    - [설정 가이드](#프론트엔드-설정-가이드)
+4. [기술 스택](#기술-스택)
 5. [배포 가이드](#배포-가이드)
 6. [문제 해결](#문제-해결)
 
@@ -26,27 +26,6 @@
 ## 프로젝트 개요
 
 약국 추천 서비스는 사용자가 입력한 주소 기반으로 가까운 약국을 추천해주는 웹 애플리케이션입니다. 백엔드는 Spring Boot를 사용하여 개발되었으며, 프론트엔드는 Next.js를 사용하여 개발되었습니다.
-
-<br>
-
-## 기술 스택
-
-### 백엔드
-- Java 17+
-- Spring Boot
-- Spring Data JPA
-- Redis (캐싱)
-- Gradle
-- Lombok
-- mariaDB
-- docker
-
-### 프론트엔드
-- TypeScript
-- Next.js
-- Tailwind CSS
-- shadcn/ui
-- Axios
 
 <br>
 
@@ -115,8 +94,10 @@ src/main/java/com/dsg/pharmacyrecommend/
    - 약국 정보를 데이터베이스에 저장하고 관리합니다.
 
 2. **거리 계산**
-   - 사용자의 위치와 약국 간의 거리를 계산합니다.
-   - 가장 가까운 약국을 추천합니다.
+  - 입력 받은 주소를 위도, 경도로 변환 하여 기존 약국 데이터와 비교 및 가까운 약국을 찾는다.   
+  - 지구는 평면이 아니기 때문에, 구면에서 두 점 사이의 최단 거리 구하는 공식이 필요    
+  - 두 위 경도 좌표 사이의 거리를 [haversine formula](https://en.wikipedia.org/wiki/Haversine_formula)로 계산  
+  - 지구가 완전한 구형이 아니 므로 아주 조금의 오차가 있다.   
 
 3. **길찾기 및 로드뷰 URL 생성**
    - 카카오맵 등의 지도 서비스와 연동하여 길찾기 및 로드뷰 URL을 생성합니다.
@@ -124,10 +105,13 @@ src/main/java/com/dsg/pharmacyrecommend/
 4. **캐싱**
    - Redis를 사용하여 자주 요청되는 데이터를 캐싱합니다.
 
+### 약국 추천 프로세스
+<img width="615" alt="스크린샷 2022-07-07 오후 1 58 39" src="https://user-images.githubusercontent.com/26623547/177694773-b53d1251-652f-41e6-8f19-c32b931d4b5b.png">
+
 ### 백엔드 설정 가이드
 
 1. **환경 설정**
-   - Java 11 이상이 설치되어 있어야 합니다.
+   - Java 17 이상이 설치되어 있어야 합니다.
    - Gradle을 사용하여 의존성을 관리합니다.
 
 2. **데이터베이스 설정**
@@ -320,6 +304,27 @@ export async function searchPharmaciesByAddress(
    # 또는
    yarn build
    ```
+
+<br>
+
+## 기술 스택
+
+### 백엔드
+- Java 17+
+- Spring Boot
+- Spring Data JPA
+- Redis (캐싱)
+- Gradle
+- Lombok
+- mariaDB
+- docker
+
+### 프론트엔드
+- TypeScript
+- Next.js
+- Tailwind CSS
+- shadcn/ui
+- Axios
 
 <br>
 
