@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,10 +23,10 @@ public class DirectionController {
 
 
     @PostMapping("/search")
-    public ResponseEntity<?> searchPharmacy(InputDto inputDto) {
+    public ResponseEntity<List<OutputDto>> searchPharmacy(@RequestBody InputDto inputDto) {
         log.info("[DirectionController.searchPharmacy] inputDto: {}", inputDto);
         List<OutputDto> outputDtos = pharmacyRecommendationService.recommendPharmacyList(inputDto.getAddress());
 
-        return new ResponseEntity<>(outputDtos, null, 200);
+        return ResponseEntity.ok(outputDtos);
     }
 }
