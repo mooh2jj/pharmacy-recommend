@@ -31,22 +31,27 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <Header />
-      <main className="flex-1">
-        <section className="container py-10 space-y-8">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold">가까운 약국 찾기</h1>
-            <p className="text-muted-foreground">
-              주소를 입력하시면 가장 가까운 약국을 추천해 드립니다.
-            </p>
-          </div>
-
-          <AddressSearch onAddressSelect={handleAddressSelect} />
+      <main className="flex-1 px-4 py-8 md:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <section className="rounded-lg bg-white shadow-sm p-6 md:p-8 mb-8">
+            <div className="max-w-3xl mx-auto space-y-4 mb-8">
+              <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-900">
+                가까운 약국 찾기
+              </h1>
+              <p className="text-muted-foreground text-center text-lg">
+                주소를 입력하시면 가장 가까운 약국을 추천해 드립니다.
+              </p>
+              <div className="mt-8">
+                <AddressSearch onAddressSelect={handleAddressSelect} />
+              </div>
+            </div>
+          </section>
 
           {searched && (
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold">
+            <section className="rounded-lg bg-white shadow-sm p-6 md:p-8">
+              <h2 className="text-xl md:text-2xl font-semibold mb-6 pb-4 border-b">
                 {loading
                   ? "검색 중..."
                   : pharmacies.length > 0
@@ -54,7 +59,7 @@ export default function Home() {
                   : `${searchAddress} 주변에 추천 약국이 없습니다.`}
               </h2>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {loading ? (
                   <>
                     <PharmacySkeleton />
@@ -70,16 +75,18 @@ export default function Home() {
                   ))
                 )}
               </div>
-            </div>
+            </section>
           )}
-        </section>
+        </div>
       </main>
-      <footer className="border-t py-6">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} 약국 추천 서비스. All rights
-            reserved.
-          </p>
+      <footer className="border-t bg-white py-8">
+        <div className="container max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <p className="text-center text-sm text-muted-foreground">
+              &copy; {new Date().getFullYear()} 약국 추천 서비스. All rights
+              reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>

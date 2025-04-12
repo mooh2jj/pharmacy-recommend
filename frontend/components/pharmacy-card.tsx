@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PharmacyDirection } from "@/lib/api";
-import { MapPin, Map, Navigation } from "lucide-react";
+import { MapPin, Map, Navigation, Ruler } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface PharmacyCardProps {
   pharmacy: PharmacyDirection;
@@ -18,24 +19,32 @@ interface PharmacyCardProps {
 
 export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MapPin className="h-5 w-5 text-primary" />
-          {pharmacy.pharmacyName}
+    <Card className="h-full overflow-hidden transition-all duration-200 hover:shadow-md">
+      <CardHeader className="pb-3 bg-primary/5">
+        <CardTitle className="flex items-center gap-2 text-primary">
+          <MapPin className="h-5 w-5" />
+          <span className="truncate">{pharmacy.pharmacyName}</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="text-sm text-muted-foreground">
-          {pharmacy.pharmacyAddress}
-        </p>
-        <p className="text-sm font-medium">거리: {pharmacy.distance}</p>
+      <CardContent className="pt-4 space-y-4">
+        <div className="space-y-1">
+          <div className="text-sm text-muted-foreground flex items-start gap-1.5">
+            <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
+            <span>{pharmacy.pharmacyAddress}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Ruler className="h-4 w-4 text-primary" />
+            <Badge variant="outline" className="font-medium">
+              {pharmacy.distance}
+            </Badge>
+          </div>
+        </div>
       </CardContent>
-      <CardFooter className="flex gap-2">
+      <CardFooter className="pt-2 gap-2">
         <Button
-          variant="outline"
+          variant="secondary"
           size="sm"
-          className="flex-1"
+          className="flex-1 shadow-sm"
           onClick={() => window.open(pharmacy.directionUrl, "_blank")}
         >
           <Navigation className="h-4 w-4 mr-2" />

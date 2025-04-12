@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Script from "next/script";
+import { Search, MapPin } from "lucide-react";
 
 declare global {
   interface Window {
@@ -73,19 +74,38 @@ export function AddressSearch({ onAddressSelect }: AddressSearchProps) {
         onLoad={() => setScriptLoaded(true)}
         strategy="lazyOnload"
       />
-      <div className="flex gap-2">
-        <Input
-          type="text"
-          placeholder="주소 입력"
-          value={address}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          className="flex-1"
-        />
-        <Button onClick={openPostcode} variant="outline">
-          주소 검색
-        </Button>
-        <Button onClick={handleSearch}>약국 찾기</Button>
+      <div className="relative w-full max-w-2xl mx-auto">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <MapPin className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <Input
+              type="text"
+              placeholder="주소 입력"
+              value={address}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
+              className="pl-10 h-12 text-base"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              onClick={openPostcode}
+              variant="outline"
+              className="whitespace-nowrap h-12"
+            >
+              주소 검색
+            </Button>
+            <Button
+              onClick={handleSearch}
+              className="whitespace-nowrap h-12 px-6 font-semibold"
+            >
+              <Search className="mr-2 h-5 w-5" />
+              약국 찾기
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

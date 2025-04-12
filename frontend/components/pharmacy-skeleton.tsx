@@ -8,15 +8,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function PharmacySkeleton() {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <Skeleton className="h-7 w-3/4" />
+    <Card className="h-full overflow-hidden transition-all duration-200">
+      <CardHeader className="pb-3 bg-primary/5">
+        <Skeleton className="h-6 w-3/4" />
       </CardHeader>
-      <CardContent className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-1/2" />
+      <CardContent className="pt-4 space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-4/5" />
+          <div className="mt-2 flex items-center gap-1.5">
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-5 w-20 rounded-full" />
+          </div>
+        </div>
       </CardContent>
-      <CardFooter className="flex gap-2">
+      <CardFooter className="pt-2 gap-2">
         <Skeleton className="h-9 w-full" />
         <Skeleton className="h-9 w-full" />
       </CardFooter>
