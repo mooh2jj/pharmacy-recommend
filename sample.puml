@@ -1,0 +1,134 @@
+@startuml 약국 추천 서비스 시퀀스 다이어그램
+
+actor 사용자
+participant "프론트엔드\n(Next.js)" as Frontend
+participant "DirectionController" as Controller
+participant "PharmacyRecommendationService" as RecommendService
+participant "KakaoAddressSearchService" as AddressService
+participant "DirectionService" as DirectionService
+participant "KakaoCategorySearchService" as CategoryService
+participant "Base62Service" as Base62Service
+database "Database" as DB
+database "Redis Cache" as Redis
+
+title 약국 추천 서비스 시퀀스 다이어그램
+
+== 주소 검색 및 약국 추천 ==
+
+사용자 -> Frontend : 주소 입력
+activate Frontend
+
+Frontend -> Controller : POST /api/direction/search\n(입력 주소)
+activate Controller
+
+Controller -> RecommendService : recommendPharmacyList(address)
+activate RecommendService
+
+RecommendService -> AddressService : requestAddressSearch(address)
+activate AddressService
+
+AddressService -> Redis : 캐시된 주소 검색 결과 확인
+activate Redis
+Redis --> AddressService : 캐시 결과 반환 (있는 경우)
+deactivate Redis
+
+alt 캐시에 결과가 없는 경우
+    AddressService -> AddressService : 카카오 주소 검색 API 호출
+    
+    AddressService -> Redis : 결과 캐싱 (TTL 설정)
+    activate Redis
+    Redis --> AddressService : 캐싱 완료
+    deactivate Redis
+end
+
+AddressService --> RecommendService : KakaoApiResponseDto 반환
+deactivate AddressService
+
+RecommendService -> DirectionService : buildDirectionListByCategoryApi(documentDto)
+activate DirectionService
+
+DirectionService -> CategoryService : requestPharmacyCategorySearch(lat, lon, radius)
+activate CategoryService
+
+CategoryService -> Redis : 캐시된 카테고리 검색 결과 확인
+activate Redis
+Redis --> CategoryService : 캐시 결과 반환 (있는 경우)
+deactivate Redis
+
+alt 캐시에 결과가 없는 경우
+    CategoryService -> CategoryService : 카카오 카테고리 검색 API 호출
+    
+    CategoryService -> Redis : 결과 캐싱 (TTL 설정)
+    activate Redis
+    Redis --> CategoryService : 캐싱 완료
+    deactivate Redis
+end
+
+CategoryService --> DirectionService : 검색된 약국 목록 반환
+deactivate CategoryService
+
+DirectionService --> RecommendService : Direction 목록 반환 (거리 기준 정렬)
+deactivate DirectionService
+
+RecommendService -> DirectionService : saveAll(directionList)
+activate DirectionService
+DirectionService -> DB : 방향 정보 저장
+DB --> DirectionService : 저장된 Direction 목록
+DirectionService --> RecommendService : 저장된 Direction 목록
+deactivate DirectionService
+
+loop 각 Direction에 대해
+    RecommendService -> Base62Service : encodeDirectionId(direction.getId())
+    activate Base62Service
+    Base62Service -> Base62Service : 10진수 ID를 62진수로 변환
+    Base62Service --> RecommendService : 인코딩된 ID 반환
+    deactivate Base62Service
+    
+    RecommendService -> RecommendService : convertToOutputDto(direction)
+    note right: 각 Direction을 OutputDto로 변환\n- 약국 이름\n- 약국 주소\n- 길안내 URL (인코딩된 ID 포함)\n- 로드뷰 URL\n- 거리 정보
+end
+
+RecommendService --> Controller : OutputDto 목록 반환
+deactivate RecommendService
+
+Controller --> Frontend : 추천 약국 목록 JSON 응답
+deactivate Controller
+
+Frontend -> Frontend : 약국 정보 표시
+note right: - 약국 이름\n- 약국 주소\n- 거리 정보\n- 길찾기 버튼\n- 로드뷰 버튼
+
+deactivate Frontend
+
+== 길 안내 서비스 사용 ==
+
+사용자 -> Frontend : 길찾기 버튼 클릭
+activate Frontend
+Frontend -> Frontend : 길안내 URL 리다이렉트
+note right: http://localhost:8085/dir/{encodedId}
+
+Frontend -> Controller : GET /dir/{encodedId}
+activate Controller
+
+Controller -> DirectionService : findDirectionUrlById(encodedId)
+activate DirectionService
+
+DirectionService -> Base62Service : decodeDirectionId(encodedId)
+activate Base62Service
+Base62Service -> Base62Service : 62진수 ID를 10진수로 변환
+Base62Service --> DirectionService : 디코딩된 ID 반환
+deactivate Base62Service
+
+DirectionService -> DB : findById(decodedId)
+DB --> DirectionService : Direction 엔티티 반환
+
+DirectionService -> DirectionService : 카카오맵 URL 생성
+DirectionService --> Controller : 카카오맵 URL 반환
+deactivate DirectionService
+
+Controller --> Frontend : 카카오맵 URL로 리다이렉트
+deactivate Controller
+
+Frontend --> 사용자 : 카카오맵 길안내 페이지로 이동
+deactivate Frontend
+
+@enduml
