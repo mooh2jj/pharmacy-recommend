@@ -1,6 +1,6 @@
 package com.dsg.pharmacyrecommend.direction.service;
 
-import com.dsg.pharmacyrecommend.api.service.KakaoCategorySearchService;
+import com.dsg.pharmacyrecommend.service.KakaoCategorySearchService;
 import com.dsg.pharmacyrecommend.direction.entity.Direction;
 import com.dsg.pharmacyrecommend.direction.repository.DirectionRepository;
 import com.dsg.pharmacyrecommend.dto.DocumentDto;

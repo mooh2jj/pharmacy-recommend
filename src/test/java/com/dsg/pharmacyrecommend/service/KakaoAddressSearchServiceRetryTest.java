@@ -1,10 +1,6 @@
 package com.dsg.pharmacyrecommend.service;
 
-import com.dsg.pharmacyrecommend.api.service.KakaoApiAddressSearchService;
-import com.dsg.pharmacyrecommend.api.service.KakaoUriBuilderService;
-import com.dsg.pharmacyrecommend.dto.DocumentDto;
 import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
-import com.dsg.pharmacyrecommend.dto.MetaDto;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -17,10 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = {
     "kakao.rest.api.key=${KAKAO_REST_API_KEY}"
 })
-class KakaoApiAddressSearchServiceRetryTest {
+class KakaoAddressSearchServiceRetryTest {
 
     @Autowired
-    private KakaoApiAddressSearchService kakaoApiAddressSearchService;
+    private KakaoAddressSearchService kakaoAddressSearchService;
 
     @Autowired
     private KakaoUriBuilderService kakaoUriBuilderService;
@@ -66,7 +60,7 @@ class KakaoApiAddressSearchServiceRetryTest {
                 .setBody(expectedResult));
 
         // when
-        KakaoApiResponseDto result = kakaoApiAddressSearchService.requestAddressSearch(address);
+        KakaoApiResponseDto result = kakaoAddressSearchService.requestAddressSearch(address);
         log.info("[KakaoApiAddressSearchServiceRetryTest retrySuccessTest] result: {}", result);
         // then
         assertThat(result.getDocumentList().get(0).getAddressName()).isEqualTo("서울 성북구 종암로10길");
@@ -85,7 +79,7 @@ class KakaoApiAddressSearchServiceRetryTest {
         mockWebServer.enqueue(new MockResponse().setResponseCode(504));
 
         // when
-        KakaoApiResponseDto result = kakaoApiAddressSearchService.requestAddressSearch(address);
+        KakaoApiResponseDto result = kakaoAddressSearchService.requestAddressSearch(address);
 
         // then
         assertThat(result).isNull();

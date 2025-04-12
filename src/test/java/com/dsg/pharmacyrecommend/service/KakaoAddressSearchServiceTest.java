@@ -1,7 +1,5 @@
 package com.dsg.pharmacyrecommend.service;
 
-import com.dsg.pharmacyrecommend.api.service.KakaoApiAddressSearchService;
-import com.dsg.pharmacyrecommend.api.service.KakaoUriBuilderService;
 import com.dsg.pharmacyrecommend.dto.DocumentDto;
 import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
 import com.dsg.pharmacyrecommend.dto.MetaDto;
@@ -31,7 +29,7 @@ import static org.mockito.Mockito.verify;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-class KakaoApiAddressSearchServiceTest {
+class KakaoAddressSearchServiceTest {
 
     @Mock
     private RestTemplate restTemplate;
@@ -40,7 +38,7 @@ class KakaoApiAddressSearchServiceTest {
     private KakaoUriBuilderService kakaoUriBuilderService;
 
     @InjectMocks
-    private KakaoApiAddressSearchService kakaoApiAddressSearchService;
+    private KakaoAddressSearchService kakaoAddressSearchService;
 
     @Test
     @DisplayName("정상적인 주소 검색 요청시 정상적으로 응답이 반환된다")
@@ -79,7 +77,7 @@ class KakaoApiAddressSearchServiceTest {
         )).willReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
         // when
-        KakaoApiResponseDto result = kakaoApiAddressSearchService.requestAddressSearch(address);
+        KakaoApiResponseDto result = kakaoAddressSearchService.requestAddressSearch(address);
 
         log.info("result: {}", result);
         // then
@@ -123,7 +121,7 @@ class KakaoApiAddressSearchServiceTest {
         )).willReturn(new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
 
         // when
-        KakaoApiResponseDto result = kakaoApiAddressSearchService.requestAddressSearch(address);
+        KakaoApiResponseDto result = kakaoAddressSearchService.requestAddressSearch(address);
 
         // then
         assertThat(result).isNull();

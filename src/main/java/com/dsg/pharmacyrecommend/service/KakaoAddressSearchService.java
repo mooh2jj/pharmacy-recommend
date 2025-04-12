@@ -1,4 +1,4 @@
-package com.dsg.pharmacyrecommend.api.service;
+package com.dsg.pharmacyrecommend.service;
 
 import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.net.URI;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KakaoApiAddressSearchService {
+public class KakaoAddressSearchService {
 
     private final RestTemplate restTemplate;
     private final KakaoUriBuilderService kakaoUriBuilderService;
@@ -43,7 +43,7 @@ public class KakaoApiAddressSearchService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "KakaoAK " + kakaoRestApiKey);
-        HttpEntity httpEntity = new HttpEntity<>(headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<KakaoApiResponseDto> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, KakaoApiResponseDto.class);
         log.info("[KakaoApiAddressSearchService requestAddressSearch] response: {}", response);

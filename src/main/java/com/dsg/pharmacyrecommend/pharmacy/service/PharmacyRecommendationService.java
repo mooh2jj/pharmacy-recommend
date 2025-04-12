@@ -1,6 +1,6 @@
 package com.dsg.pharmacyrecommend.pharmacy.service;
 
-import com.dsg.pharmacyrecommend.api.service.KakaoApiAddressSearchService;
+import com.dsg.pharmacyrecommend.service.KakaoAddressSearchService;
 import com.dsg.pharmacyrecommend.direction.dto.OutputDto;
 import com.dsg.pharmacyrecommend.direction.entity.Direction;
 import com.dsg.pharmacyrecommend.direction.service.Base62Service;
@@ -25,7 +25,7 @@ public class PharmacyRecommendationService {
 
     private static final String ROAD_VIEW_BASE_URL = "https://map.kakao.com/link/roadview/";
 
-    private final KakaoApiAddressSearchService kakaoAddressSearchService;
+    private final KakaoAddressSearchService kakaoAddressSearchService;
     private final DirectionService directionService;
     private final Base62Service base62Service;
 

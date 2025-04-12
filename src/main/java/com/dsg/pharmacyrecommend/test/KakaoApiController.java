@@ -1,7 +1,7 @@
-package com.dsg.pharmacyrecommend.controller;
+package com.dsg.pharmacyrecommend.test;
 
 import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
-import com.dsg.pharmacyrecommend.api.service.KakaoApiAddressSearchService;
+import com.dsg.pharmacyrecommend.service.KakaoAddressSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class KakaoApiController {
 
-    private final KakaoApiAddressSearchService kakaoApiAddressSearchService;
+    private final KakaoAddressSearchService kakaoAddressSearchService;
 
     @GetMapping("/address")
     public ResponseEntity<KakaoApiResponseDto> test(@RequestParam String search) {
-        KakaoApiResponseDto responseDto = kakaoApiAddressSearchService.requestAddressSearch(search);
+        KakaoApiResponseDto responseDto = kakaoAddressSearchService.requestAddressSearch(search);
         return ResponseEntity.ok(responseDto);
     }
 
