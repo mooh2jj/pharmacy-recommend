@@ -20,6 +20,18 @@ const api = axios.create({
   withCredentials: false, // 상대 경로 사용으로 withCredentials 불필요
 });
 
+export async function getPharmacyDirection(
+  encodedId: string
+): Promise<PharmacyDirection | undefined> {
+  try {
+    const response = await api.get(`/api/direction/${encodedId}`);
+    return response.data;
+  } catch (error: unknown) {
+    console.error("길찾기 URL을 가져오는 중 오류 발생:", error);
+    return undefined;
+  }
+}
+
 export async function searchPharmaciesByAddress(
   address: string
 ): Promise<PharmacyDirection[]> {

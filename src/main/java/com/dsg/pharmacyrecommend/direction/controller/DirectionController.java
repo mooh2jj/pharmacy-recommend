@@ -2,14 +2,12 @@ package com.dsg.pharmacyrecommend.direction.controller;
 
 import com.dsg.pharmacyrecommend.direction.dto.InputDto;
 import com.dsg.pharmacyrecommend.direction.dto.OutputDto;
+import com.dsg.pharmacyrecommend.direction.service.DirectionService;
 import com.dsg.pharmacyrecommend.pharmacy.service.PharmacyRecommendationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,7 @@ import java.util.List;
 public class DirectionController {
 
     private final PharmacyRecommendationService pharmacyRecommendationService;
+    private final DirectionService directionService;
 
 
     @PostMapping("/search")
@@ -28,5 +27,13 @@ public class DirectionController {
         List<OutputDto> outputDtos = pharmacyRecommendationService.recommendPharmacyList(inputDto.getAddress());
 
         return ResponseEntity.ok(outputDtos);
+    }
+
+    @GetMapping("/{encodedId}")
+    public ResponseEntity<?> getPharmacy(@PathVariable String encodedId) {
+        log.info("[DirectionController.getPharmacy] encodedId: {}", encodedId);
+        String directionUrlById = directionService.findDirectionUrlById(encodedId);
+        log.info("[DirectionController.getPharmacy] directionUrlById: {}", directionUrlById);
+        return ResponseEntity.ok(directionUrlById);
     }
 }

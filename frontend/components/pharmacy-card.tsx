@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PharmacyDirection } from "@/lib/api";
+import { getPharmacyDirection, PharmacyDirection } from "@/lib/api";
 import { MapPin, Map, Navigation, Ruler } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -18,6 +18,30 @@ interface PharmacyCardProps {
 }
 
 export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
+  const handleDirectionClick = async () => {
+    try {
+      // directionUrl에서 encodedId 추출 (URL의 마지막 부분)
+      // 예: "http://localhost:8085/api/direction/3LM" -> "3LM"
+      const encodedId = pharmacy.directionUrl.split("/").pop();
+
+      if (!encodedId) {
+        console.error("약국 ID를 찾을 수 없습니다.");
+        return;
+      }
+
+      // API 호출하여 카카오맵 URL 가져오기
+      const response = await getPharmacyDirection(encodedId);
+      if (typeof response === "string") {
+        // 응답이 카카오맵 URL이므로 해당 URL로 새 창 열기
+        window.open(response, "_blank");
+      } else {
+        console.error("카카오맵 URL을 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("길찾기 URL을 가져오는 중 오류 발생:", error);
+    }
+  };
+
   return (
     <Card className="h-full overflow-hidden transition-all duration-200 hover:shadow-md">
       <CardHeader className="pb-3 bg-primary/5">
@@ -45,7 +69,7 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
           variant="secondary"
           size="sm"
           className="flex-1 shadow-sm"
-          onClick={() => window.open(pharmacy.directionUrl, "_blank")}
+          onClick={handleDirectionClick}
         >
           <Navigation className="h-4 w-4 mr-2" />
           길찾기
