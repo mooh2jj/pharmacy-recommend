@@ -1,6 +1,7 @@
 package com.dsg.pharmacyrecommend.direction.service;
 
 import com.dsg.pharmacyrecommend.direction.entity.Direction;
+import com.dsg.pharmacyrecommend.direction.repository.DirectionRepository;
 import com.dsg.pharmacyrecommend.dto.DocumentDto;
 import com.dsg.pharmacyrecommend.pharmacy.dto.PharmacyDto;
 import com.dsg.pharmacyrecommend.pharmacy.service.PharmacySearchService;
@@ -11,9 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -24,12 +27,20 @@ class DirectionServiceTest {
 
     @Mock
     private PharmacySearchService pharmacySearchService;
+    
+    @Mock
+    private DirectionRepository directionRepository;
+    
+    @Mock
+    private Base62Service base62Service;
 
     private DirectionService directionService;
+    
+    private static final String DIRECTION_BASE_URL = "https://map.kakao.com/link/map/";
 
     @BeforeEach
     void setUp() {
-        directionService = new DirectionService(pharmacySearchService, null, null, null);
+        directionService = new DirectionService(pharmacySearchService, directionRepository, base62Service, null);
     }
 
     @Test
@@ -97,5 +108,38 @@ class DirectionServiceTest {
         // 거리 검증
         assertThat(results.get(0).getDistance()).isLessThan(10.0);
         assertThat(results.get(1).getDistance()).isLessThan(10.0);
+    }
+    
+    @Test
+    @DisplayName("findDirectionUrlById: 약국 방향 URL을 정상적으로 반환한다")
+    void findDirectionUrlById() {
+        // given
+        String encodedId = "r";
+        Long decodedId = 1L;
+        String pharmacyName = "약국명";
+        double latitude = 37.5960;
+        double longitude = 127.0371;
+        
+        Direction direction = Direction.builder()
+                .targetPharmacyName(pharmacyName)
+                .targetLatitude(latitude)
+                .targetLongitude(longitude)
+                .build();
+        
+        String expectedUrl = UriComponentsBuilder.fromUriString(DIRECTION_BASE_URL + String.join(",", 
+                pharmacyName, String.valueOf(latitude), String.valueOf(longitude)))
+                .toUriString();
+        
+        // Mock 설정
+        when(base62Service.decodeDirectionId(encodedId)).thenReturn(decodedId);
+        when(directionRepository.findById(decodedId)).thenReturn(Optional.of(direction));
+        
+        // when
+        String result = directionService.findDirectionUrlById(encodedId);
+        log.info("result: {}", result);
+        
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(expectedUrl);
     }
 }

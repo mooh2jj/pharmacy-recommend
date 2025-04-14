@@ -39,6 +39,11 @@ public class DirectionService {
         return directionRepository.saveAll(directionList);
     }
 
+    /**
+     * 약국 방향 shortn URL 생성 (base62로 인코딩)
+     * @param encodedId 약국 id
+     * @return 약국 방향 URL
+     */
     @Transactional(readOnly = true)
     public String findDirectionUrlById(String encodedId) {
 
