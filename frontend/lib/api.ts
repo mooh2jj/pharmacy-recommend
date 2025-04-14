@@ -20,6 +20,7 @@ const api = axios.create({
   withCredentials: false, // 상대 경로 사용으로 withCredentials 불필요
 });
 
+// 약국 길찾기 URL을 가져오는 함수
 export async function getPharmacyDirection(
   encodedId: string
 ): Promise<PharmacyDirection | undefined> {
@@ -32,6 +33,7 @@ export async function getPharmacyDirection(
   }
 }
 
+// 약국 검색 함수
 export async function searchPharmaciesByAddress(
   address: string
 ): Promise<PharmacyDirection[]> {
