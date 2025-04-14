@@ -17,6 +17,10 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int redisPort;
 
+    /**
+     * Zedis보다는 Lettuce를 사용한다. 성능이 더 좋음
+     * @return RedisConnectionFactory
+     */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(redisHost, redisPort);

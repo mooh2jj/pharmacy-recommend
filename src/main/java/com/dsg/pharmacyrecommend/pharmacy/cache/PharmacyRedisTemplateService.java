@@ -25,19 +25,28 @@ public class PharmacyRedisTemplateService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
+    /**
+     * RedisTemplate의 HashOperations을 사용하기 위한 초기화 메서드
+     */
     private HashOperations<String, String, String> hashOperations;
 
     @PostConstruct
     public void init() {
+        /**
+         * Hash 자료구조 사용
+         */
         this.hashOperations = redisTemplate.opsForHash();
     }
 
+    /**
+     * 약국 정보를 Redis에 저장
+     * @param pharmacyDto 약국 DTO
+     */
     public void save(PharmacyDto pharmacyDto) {
-        if(Objects.isNull(pharmacyDto) || Objects.isNull(pharmacyDto.getId())) {
+        if (Objects.isNull(pharmacyDto) || Objects.isNull(pharmacyDto.getId())) {
             log.error("Required Values must not be null");
             return;
         }
-
         try {
             hashOperations.put(CACHE_KEY,
                     pharmacyDto.getId().toString(),
@@ -48,6 +57,10 @@ public class PharmacyRedisTemplateService {
         }
     }
 
+    /**
+     * 약국 정보를 Redis에서 조회
+     * @return 약국 DTO 리스트
+     */
     public List<PharmacyDto> findAll() {
 
         try {
@@ -64,15 +77,31 @@ public class PharmacyRedisTemplateService {
         }
     }
 
+    /**
+     * 약국 정보를 Redis에서 조회
+     * @param id 약국 ID
+     */
     public void delete(Long id) {
         hashOperations.delete(CACHE_KEY, String.valueOf(id));
         log.info("[PharmacyRedisTemplateService delete]: {} ", id);
     }
 
+    /**
+     * PharmacyDto를 JSON 문자열로 변환
+     * @param pharmacyDto 약국 DTO
+     * @return JSON 문자열
+     * @throws JsonProcessingException 변환 예외
+     */
     private String serializePharmacyDto(PharmacyDto pharmacyDto) throws JsonProcessingException {
         return objectMapper.writeValueAsString(pharmacyDto);
     }
 
+    /**
+     * JSON 문자열을 PharmacyDto로 변환
+     * @param value JSON 문자열
+     * @return 약국 DTO
+     * @throws JsonProcessingException 변환 예외
+     */
     private PharmacyDto deserializePharmacyDto(String value) throws JsonProcessingException {
         return objectMapper.readValue(value, PharmacyDto.class);
     }

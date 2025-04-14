@@ -60,6 +60,7 @@ public class DirectionService {
 
     /**
      * 반경 10km 이내 약국 검색 결과를 Direction List로 변환
+     * 실베 db(redis or mariadb)에서 가져오는 방식
      * @param documentDto 검색 결과
      * @return Direction List
      */
@@ -86,7 +87,11 @@ public class DirectionService {
                 .collect(Collectors.toList());
     }
 
-    // pharmacy search by category kakao api
+    /**
+     * pharmacy search by category kakao api
+     * @param inputDocumentDto 약국 검색 결과
+     * @return 약국 방향 URL
+     */
     public List<Direction> buildDirectionListByCategoryApi(DocumentDto inputDocumentDto) {
         if(Objects.isNull(inputDocumentDto)) return Collections.emptyList();
 
