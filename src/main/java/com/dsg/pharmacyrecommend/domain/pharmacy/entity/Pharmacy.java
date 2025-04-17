@@ -1,6 +1,6 @@
 package com.dsg.pharmacyrecommend.domain.pharmacy.entity;
 
-import com.dsg.pharmacyrecommend.BaseTimeEntity;
+import com.dsg.pharmacyrecommend.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

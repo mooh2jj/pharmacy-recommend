@@ -1,6 +1,6 @@
 package com.dsg.pharmacyrecommend.domain.direction.entity;
 
-import com.dsg.pharmacyrecommend.BaseTimeEntity;
+import com.dsg.pharmacyrecommend.domain.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

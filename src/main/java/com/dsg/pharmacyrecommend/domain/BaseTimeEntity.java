@@ -1,4 +1,4 @@
-package com.dsg.pharmacyrecommend;
+package com.dsg.pharmacyrecommend.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
