@@ -1,7 +1,8 @@
 package com.dsg.pharmacyrecommend.pharmacy.service;
 
-import com.dsg.pharmacyrecommend.pharmacy.entity.Pharmacy;
-import com.dsg.pharmacyrecommend.pharmacy.repository.PharmacyRepository;
+import com.dsg.pharmacyrecommend.domain.pharmacy.entity.Pharmacy;
+import com.dsg.pharmacyrecommend.domain.pharmacy.repository.PharmacyRepository;
+import com.dsg.pharmacyrecommend.domain.pharmacy.service.PharmacyRepositoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

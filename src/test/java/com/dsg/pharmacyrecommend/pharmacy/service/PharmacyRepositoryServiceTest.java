@@ -1,7 +1,8 @@
 package com.dsg.pharmacyrecommend.pharmacy.service;
 
-import com.dsg.pharmacyrecommend.pharmacy.entity.Pharmacy;
-import com.dsg.pharmacyrecommend.pharmacy.repository.PharmacyRepository;
+import com.dsg.pharmacyrecommend.domain.pharmacy.entity.Pharmacy;
+import com.dsg.pharmacyrecommend.domain.pharmacy.repository.PharmacyRepository;
+import com.dsg.pharmacyrecommend.domain.pharmacy.service.PharmacyRepositoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.dsg.pharmacyrecommend.test;
 
-import com.dsg.pharmacyrecommend.dto.KakaoApiResponseDto;
-import com.dsg.pharmacyrecommend.service.KakaoAddressSearchService;
+import com.dsg.pharmacyrecommend.kakao.dto.KakaoApiResponseDto;
+import com.dsg.pharmacyrecommend.kakao.KakaoAddressSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

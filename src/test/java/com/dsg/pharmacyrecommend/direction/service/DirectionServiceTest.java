@@ -1,10 +1,12 @@
 package com.dsg.pharmacyrecommend.direction.service;
 
-import com.dsg.pharmacyrecommend.direction.entity.Direction;
-import com.dsg.pharmacyrecommend.direction.repository.DirectionRepository;
-import com.dsg.pharmacyrecommend.dto.DocumentDto;
-import com.dsg.pharmacyrecommend.pharmacy.dto.PharmacyDto;
-import com.dsg.pharmacyrecommend.pharmacy.service.PharmacySearchService;
+import com.dsg.pharmacyrecommend.domain.direction.entity.Direction;
+import com.dsg.pharmacyrecommend.domain.direction.repository.DirectionRepository;
+import com.dsg.pharmacyrecommend.domain.direction.service.Base62Service;
+import com.dsg.pharmacyrecommend.domain.direction.service.DirectionService;
+import com.dsg.pharmacyrecommend.kakao.dto.DocumentDto;
+import com.dsg.pharmacyrecommend.domain.pharmacy.dto.PharmacyDto;
+import com.dsg.pharmacyrecommend.domain.pharmacy.service.PharmacySearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
